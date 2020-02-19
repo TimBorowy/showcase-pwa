@@ -6,7 +6,7 @@
           <md-button class="md-icon-button" @click="menuVisible = !menuVisible">
             <md-icon>menu</md-icon>
           </md-button>
-          <span class="md-title">Cool CMGT Showcase Progressive Web App</span>
+          <span class="md-title">CMGT Showcase App</span>
         </div>
       </md-app-toolbar>
 
@@ -18,7 +18,7 @@
         <md-list>
           <router-link :to="link.to" v-for="(link, index) in links" :key="index">
             <md-list-item>
-              <md-icon>move_to_inbox</md-icon>
+              <md-icon>{{link.icon}}</md-icon>
               <span>{{link.name}}</span>
             </md-list-item>
           </router-link>
@@ -41,15 +41,13 @@ export default {
     links: [
       {
         name: "Home",
-        to: "/"
+        to: "/",
+        icon: "home"
       },
       {
         name: "Project",
-        to: "/project"
-      },
-      {
-        name: "Bad Link",
-        to: "/random-bad-url"
+        to: "/project",
+        icon: "label"
       }
     ],
     menuVisible: false

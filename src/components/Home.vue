@@ -1,19 +1,31 @@
 <template>
   <div>
-    <h1>Home</h1>
+    <h1>Welcome</h1>
 
-    <p>welcome to the cmgt showcase website</p>
+    <p>To the cmgt showcase website</p>
 
-    <ul>
-      <li v-for="(project, index) in projects" :key="index">{{project.title}}</li>
-    </ul>
+    <div class="cards">
+      <md-card v-for="(project, index) in projects" :key="index">
+        <md-card-media>
+          <img
+            v-bind:src="'https://cmgt.hr.nl:8000/'+project.headerImage"
+            loading="lazy"
+            alt="Project header image"
+            width="auto"
+            height="50px"
+          >
+        </md-card-media>
+
+        <md-card-header>
+          <div class="md-title">{{project.title}}</div>
+          <div class="md-subhead">{{project.description ? project.description.substr(0, 255) : ""}}</div>
+        </md-card-header>
+      </md-card>
+    </div>
   </div>
 </template>
 
 <style scoped>
-h1 {
-  color: blue;
-}
 </style>
 
 <script>
@@ -28,6 +40,7 @@ export default {
   methods: {},
   created: async function() {
     const req = await axios.get("https://cmgt.hr.nl:8000/api/projects/");
+    console.log(req.data);
     this.projects = req.data.projects;
   }
 };
