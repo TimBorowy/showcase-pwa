@@ -29,8 +29,6 @@
 </style>
 
 <script>
-import axios from "axios";
-
 export default {
   data: () => {
     return {
@@ -39,9 +37,13 @@ export default {
   },
   methods: {},
   created: async function() {
-    const req = await axios.get("https://cmgt.hr.nl:8000/api/projects/");
-    console.log(req.data);
-    this.projects = req.data.projects;
+    try {
+      const res = await fetch("https://cmgt.hr.nl:8000/api/projects/");
+      const data = await res.json();
+      this.projects = data.projects;
+    } catch (error) {
+      console.error(error);
+    }
   }
 };
 </script>
