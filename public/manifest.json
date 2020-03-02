@@ -1,6 +1,6 @@
 {
-    "short_name": "CMGT showcase",
-    "name": "First Vue PWA App",
+    "short_name": "CMGT Showcase",
+    "name": "CMGT Showcase Progressive Web App",
     "icons": [
         {
             "src": "/192.png",

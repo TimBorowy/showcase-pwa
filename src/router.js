@@ -14,17 +14,17 @@ export default new Router({
     routes: [
         {
             path: '/',
-            name: 'Home',
+            name: 'home',
             component: Home
         },
         {
-            path: '/project',
-            name: 'Project',
+            path: '/project/:slug',
+            name: 'project',
             component: Project
         },
         {
             path: '**',
-            name: 'PageNotFound',
+            name: 'pageNotFound',
             component: NotFound
         }
     ]

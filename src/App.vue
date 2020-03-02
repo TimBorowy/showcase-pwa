@@ -6,7 +6,10 @@
           <md-button class="md-icon-button" @click="menuVisible = !menuVisible">
             <md-icon>menu</md-icon>
           </md-button>
-          <span class="md-title">CMGT Showcase App</span>
+          <span class="md-title">
+            CMGT Showcase App
+            <span v-if="!online">(OFFLINE)</span>
+          </span>
         </div>
       </md-app-toolbar>
 
@@ -28,6 +31,16 @@
       <md-app-content>
         <router-view/>
       </md-app-content>
+
+      <md-snackbar
+        md-position="center"
+        md-duration="4000"
+        :md-active.sync="showSnackbar"
+        md-persistent
+      >
+        <span>{{snackbarMsg}}bla bla bla</span>
+        <md-button class="md-primary" @click="showSnackbar = false">Retry</md-button>
+      </md-snackbar>
     </md-app>
   </div>
 </template>
@@ -50,7 +63,28 @@ export default {
         icon: "label"
       }
     ],
-    menuVisible: false
-  })
+    menuVisible: false,
+    online: navigator.onLine,
+    snackbarMsg: "",
+    showSnackbar: true
+  }),
+  methods: {
+    handleNetworkChange: function() {
+      console.log("networkchange");
+      this.online = navigator.onLine;
+
+      if (this.online) {
+        this.snackbarMsg = "Back online! browse awayyyy!";
+        this.showSnackbar = true;
+      } else {
+        this.snackbarMsg = "Device offline :( content may be limited ";
+        this.showSnackbar = true;
+      }
+    }
+  },
+  mounted: function() {
+    window.addEventListener("online", this.handleNetworkChange);
+    window.addEventListener("offline", this.handleNetworkChange);
+  }
 };
 </script>

@@ -5,6 +5,7 @@ import router from './router'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
+import localforage from 'localforage'
 
 
 if ('serviceWorker' in navigator) {
@@ -18,6 +19,10 @@ if ('serviceWorker' in navigator) {
     });
   });
 }
+
+localforage.config({
+  name: 'showcaseDB'
+});
 
 Vue.use(VueMaterial)
 
