@@ -48,6 +48,7 @@ export default {
       this.projects = data.projects;
     } catch (error) {
       console.error(error);
+      console.log("Error loading api data, offline & non cached?");
     }
   }
 };

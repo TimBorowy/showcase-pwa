@@ -21,7 +21,7 @@ if ('serviceWorker' in navigator) {
 }
 
 localforage.config({
-  name: 'showcaseDB'
+  name: 'localforage'
 });
 
 Vue.use(VueMaterial)
