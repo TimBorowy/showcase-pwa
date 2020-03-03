@@ -8,7 +8,9 @@
           </md-button>
           <span class="md-title">
             CMGT Showcase App
-            <span v-if="!online">(OFFLINE)</span>
+            <span v-if="!online">
+              <md-icon>signal_wifi_off</md-icon>
+            </span>
           </span>
         </div>
       </md-app-toolbar>
@@ -19,10 +21,10 @@
         </md-toolbar>
 
         <md-list>
-          <router-link :to="link.to" v-for="(link, index) in links" :key="index">
+          <router-link to="/">
             <md-list-item>
-              <md-icon>{{link.icon}}</md-icon>
-              <span>{{link.name}}</span>
+              <md-icon>home</md-icon>
+              <span>Home</span>
             </md-list-item>
           </router-link>
         </md-list>
@@ -30,17 +32,11 @@
 
       <md-app-content>
         <router-view/>
+        <md-snackbar md-position="center" :md-active.sync="showSnackbar" md-persistent>
+          <span>{{snackbarMsg}}</span>
+          <md-button class="md-primary" @click="showSnackbar = false">Dismis</md-button>
+        </md-snackbar>
       </md-app-content>
-
-      <md-snackbar
-        md-position="center"
-        md-duration="4000"
-        :md-active.sync="showSnackbar"
-        md-persistent
-      >
-        <span>{{snackbarMsg}}bla bla bla</span>
-        <md-button class="md-primary" @click="showSnackbar = false">Retry</md-button>
-      </md-snackbar>
     </md-app>
   </div>
 </template>
@@ -51,22 +47,10 @@
 <script>
 export default {
   data: () => ({
-    links: [
-      {
-        name: "Home",
-        to: "/",
-        icon: "home"
-      },
-      {
-        name: "Project",
-        to: "/project",
-        icon: "label"
-      }
-    ],
     menuVisible: false,
     online: navigator.onLine,
     snackbarMsg: "",
-    showSnackbar: true
+    showSnackbar: false
   }),
   methods: {
     handleNetworkChange: function() {
@@ -74,10 +58,10 @@ export default {
       this.online = navigator.onLine;
 
       if (this.online) {
-        this.snackbarMsg = "Back online! browse awayyyy!";
+        this.snackbarMsg = "Back online! browse awayyy!";
         this.showSnackbar = true;
       } else {
-        this.snackbarMsg = "Device offline :( content may be limited ";
+        this.snackbarMsg = "Device offline :( content may be limited";
         this.showSnackbar = true;
       }
     }
