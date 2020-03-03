@@ -1,7 +1,6 @@
 <template>
   <div>
     <h1>{{project.title}}</h1>
-    <p>{{$route.params.slug}}</p>
 
     <div class="cards">
       <md-card>
