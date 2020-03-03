@@ -4,6 +4,10 @@
 
     <p>To the cmgt showcase website</p>
 
+    <div v-if="tags && online" class="tag-container">
+      <div v-for="(tag, index) in tags" :key="index" class="tag">{{tag}}</div>
+    </div>
+
     <div class="cards">
       <md-card v-for="(project, index) in projects" :key="index">
         <router-link :to="{ name: 'project', params: { slug: project.slug }}">
@@ -30,6 +34,18 @@
 </template>
 
 <style scoped>
+.tag-container {
+  display: flex;
+  flex-flow: wrap;
+  margin-bottom: 10px;
+}
+.tag {
+  padding: 5px;
+  margin: 5px;
+  color: #fff;
+  border-radius: 5px;
+  background: #448aff;
+}
 </style>
 
 <script>
@@ -37,10 +53,16 @@ export default {
   name: "home",
   data: () => {
     return {
-      projects: [{ title: "loading.." }]
+      projects: [],
+      tags: null,
+      online: navigator.onLine
     };
   },
-  methods: {},
+  methods: {
+    handleNetworkChange: function() {
+      this.online = navigator.onLine;
+    }
+  },
   created: async function() {
     try {
       const res = await fetch("https://cmgt.hr.nl:8000/api/projects/");
@@ -50,6 +72,18 @@ export default {
       console.error(error);
       console.log("Error loading api data, offline & non cached?");
     }
+
+    try {
+      const res = await fetch("https://cmgt.hr.nl:8000/api/projects/tags/");
+      const data = await res.json();
+      this.tags = data.tags;
+    } catch (error) {
+      console.log("Network only resource failed to load");
+    }
+  },
+  mounted: function() {
+    window.addEventListener("online", this.handleNetworkChange);
+    window.addEventListener("offline", this.handleNetworkChange);
   }
 };
 </script>
