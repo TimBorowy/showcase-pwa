@@ -5,28 +5,36 @@
     <p>To the cmgt showcase website</p>
 
     <div v-if="tags && online" class="tag-container">
-      <div v-for="(tag, index) in tags" :key="index" class="tag">{{tag}}</div>
+      <div v-for="(tag, index) in tags" :key="index" class="tag">
+        {{ tag.name }}
+      </div>
     </div>
 
     <div class="cards">
-      <md-card v-for="(project, index) in projects" :key="index">
-        <router-link :to="{ name: 'project', params: { slug: project.slug }}">
+      <md-card v-for="(item, index) in projects" :key="index">
+        <router-link
+          :to="{ name: 'project', params: { slug: item.project.slug } }"
+        >
           <md-card-media>
             <img
-              v-bind:src="'https://cmgt.hr.nl:8000/'+project.headerImage"
+              v-bind:src="item.project.header_image[0]"
               loading="lazy"
               alt="Project header image"
               width="auto"
               height="50px"
-            >
+            />
           </md-card-media>
 
           <md-card-header>
-            <div class="md-title">{{project.title}}</div>
-            <div
-              class="md-subhead"
-            >{{project.description ? project.description.substr(0, 255) : ""}}</div>
+            <div class="md-title">{{ item.project.title }}</div>
           </md-card-header>
+          <md-card-content
+            v-html="
+              item.project.description
+                ? item.project.description.substr(0, 512)
+                : ''
+            "
+          ></md-card-content>
         </router-link>
       </md-card>
     </div>
@@ -55,35 +63,35 @@ export default {
     return {
       projects: [],
       tags: null,
-      online: navigator.onLine
+      online: navigator.onLine,
     };
   },
   methods: {
-    handleNetworkChange: function() {
+    handleNetworkChange: function () {
       this.online = navigator.onLine;
-    }
+    },
   },
-  created: async function() {
+  created: async function () {
     try {
-      const res = await fetch("https://cmgt.hr.nl:8000/api/projects/");
-      const data = await res.json();
-      this.projects = data.projects;
+      const res = await fetch("https://cmgt.hr.nl/api/projects");
+      const projects = await res.json();
+      this.projects = projects.data;
     } catch (error) {
       console.error(error);
       console.log("Error loading api data, offline & non cached?");
     }
 
     try {
-      const res = await fetch("https://cmgt.hr.nl:8000/api/projects/tags/");
-      const data = await res.json();
-      this.tags = data.tags;
+      const res = await fetch("https://cmgt.hr.nl/api/tags");
+      const tags = await res.json();
+      this.tags = tags.data;
     } catch (error) {
       console.log("Network only resource failed to load");
     }
   },
-  mounted: function() {
+  mounted: function () {
     window.addEventListener("online", this.handleNetworkChange);
     window.addEventListener("offline", this.handleNetworkChange);
-  }
+  },
 };
 </script>
